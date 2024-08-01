@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   // CheckBox was clicked
   void checkBoxClicked(bool? value, int index) {
     setState(() {
-      habitCompleted = value!;
+      toDayHabitList[index][1] = value;
     });
   }
 
