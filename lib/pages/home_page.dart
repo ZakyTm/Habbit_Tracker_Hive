@@ -10,7 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Data structured for the habit list
+  // [Data structured for the habit list],
   List toDayHabitList = [
     ["Morning Run", false],
     ["Reading a Book", false],
@@ -19,10 +19,9 @@ class _HomePageState extends State<HomePage> {
     ["Coding", false],
     ["Evening Walk", false],
   ];
-  //bool to control habbit completed
-  bool habitCompleted = false;
+
   // CheckBox was clicked
-  void checkBoxClicked(bool? value) {
+  void checkBoxClicked(bool? value, int index) {
     setState(() {
       habitCompleted = value!;
     });
@@ -32,14 +31,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[300],
-        body: ListView(
-          children: [
-            // habit tiles
-            HabitTile(
-                habitName: 'Drink Water',
-                habitIsDone: habitCompleted,
-                toggleHabit: (value) => checkBoxClicked(value)),
-          ],
-        ));
+        body: ListView.builder(itemBuilder: (context, index) {
+          return HabitTile(
+              habitName: toDayHabitList[index][0],
+              habitIsDone: toDayHabitList[index][1],
+              toggleHabit: (value) => checkBoxClicked(value, index));
+        }));
   }
 }
