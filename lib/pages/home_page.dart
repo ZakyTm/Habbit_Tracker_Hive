@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:habbit_tracker/components/habit_tile.dart';
+import 'package:habbit_tracker/components/my_fab.dart';
+import 'package:habbit_tracker/components/new_habit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,15 +29,31 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void createNewHabit() {
+    setState(() {
+      //Show alerts dialoge for use to create a fill in the new habbit
+      showDialog(
+          context: context,
+          builder: (context) {
+            return EnterNewHabitBox();
+          });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[300],
-        body: ListView.builder(itemBuilder: (context, index) {
-          return HabitTile(
-              habitName: toDayHabitList[index][0],
-              habitIsDone: toDayHabitList[index][1],
-              toggleHabit: (value) => checkBoxClicked(value, index));
-        }));
+        floatingActionButton: MyFloatingActionButton(
+          onPressed: createNewHabit,
+        ),
+        body: ListView.builder(
+            itemCount: toDayHabitList.length,
+            itemBuilder: (context, index) {
+              return HabitTile(
+                  habitName: toDayHabitList[index][0],
+                  habitIsDone: toDayHabitList[index][1],
+                  toggleHabit: (value) => checkBoxClicked(value, index));
+            }));
   }
 }
