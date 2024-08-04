@@ -29,15 +29,39 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  final _newHabitNameController = TextEditingController();
   void createNewHabit() {
     setState(() {
       //Show alerts dialoge for use to create a fill in the new habbit
       showDialog(
           context: context,
           builder: (context) {
-            return EnterNewHabitBox();
+            return EnterNewHabitBox(
+              controller:
+                  _newHabitNameController, //controller for the text field
+              onSave: saveNewHabit, //onSave function
+              onCancel: cancelNewHabit, //onCancel function
+            );
           });
     });
+  }
+
+  void saveNewHabit() {
+    //add a new habit to todayHabitList
+    setState(() {
+      toDayHabitList.add([_newHabitNameController.text, false]);
+    });
+    //clear textField
+    _newHabitNameController.clear();
+    //pop dialog box
+    Navigator.of(context).pop();
+  }
+
+  void cancelNewHabit() {
+    //clear textField
+    _newHabitNameController.clear();
+    //pop dialog box
+    Navigator.of(context).pop();
   }
 
   @override

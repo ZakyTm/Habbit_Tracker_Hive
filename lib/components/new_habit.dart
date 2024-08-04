@@ -24,7 +24,7 @@ class EnterNewHabitBox extends StatelessWidget {
             child: Text("Cancel")),
         TextButton(
             onPressed: () {
-              // Add your onPressed function here
+              onSave!();
             },
             child: Text("Add"))
       ],
