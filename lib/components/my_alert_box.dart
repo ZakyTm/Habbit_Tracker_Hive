@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
-class EnterNewHabitBox extends StatelessWidget {
+class MyAlertBox extends StatelessWidget {
   final controller;
   final VoidCallback? onSave;
   final VoidCallback? onCancel;
-  EnterNewHabitBox(
-      {super.key, required this.controller, this.onSave, this.onCancel});
+  final String hintText;
+  MyAlertBox(
+      {super.key,
+      required this.controller,
+      required this.onSave,
+      required this.onCancel,
+      required this.hintText});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +18,7 @@ class EnterNewHabitBox extends StatelessWidget {
       title: Text("Enter New Habit"),
       content: TextField(
         controller: controller,
-        decoration: InputDecoration(hintText: "Enter Habit Name"),
+        decoration: InputDecoration(hintText: hintText),
       ),
       actions: [
         TextButton(
