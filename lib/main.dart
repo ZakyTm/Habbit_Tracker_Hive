@@ -5,10 +5,10 @@ import 'package:hive_flutter/adapters.dart';
 
 void main() async {
 // initialize hive
-  await Hive.initFlutter("habbit_tracker");
+  await Hive.initFlutter();
 
   // Open the box
-  await Hive.openBox("habbit_Database");
+  await Hive.openBox("Habbit_Database");
 
   runApp(const MyApp());
 }
