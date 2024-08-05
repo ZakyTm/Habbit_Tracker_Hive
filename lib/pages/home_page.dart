@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:habbit_tracker/components/habit_tile.dart';
 import 'package:habbit_tracker/components/my_alert_box.dart';
 import 'package:habbit_tracker/components/my_fab.dart';
@@ -59,10 +58,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void cancelDialogBox() {
-    //clear textField
+    print('Cancel button clicked');
     _newHabitNameController.clear();
-    //pop dialog box
-    Navigator.of(context).pop();
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    } else {
+      print('Cannot pop the context');
+    }
   }
 
 //OPen habit settings to edit

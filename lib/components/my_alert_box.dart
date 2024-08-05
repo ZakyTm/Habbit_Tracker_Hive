@@ -5,7 +5,7 @@ class MyAlertBox extends StatelessWidget {
   final VoidCallback? onSave;
   final VoidCallback? onCancel;
   final String hintText;
-  MyAlertBox(
+  const MyAlertBox(
       {super.key,
       required this.controller,
       required this.onSave,
@@ -15,7 +15,7 @@ class MyAlertBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Enter New Habit"),
+      title: const Text("Enter New Habit"),
       content: TextField(
         controller: controller,
         decoration: InputDecoration(hintText: hintText),
@@ -26,12 +26,12 @@ class MyAlertBox extends StatelessWidget {
               onCancel!();
               Navigator.of(context).pop();
             },
-            child: Text("Cancel")),
+            child: const Text("Cancel")),
         TextButton(
             onPressed: () {
               onSave!();
             },
-            child: Text("Add"))
+            child: const Text("Add"))
       ],
     );
   }
