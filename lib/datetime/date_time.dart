@@ -13,5 +13,11 @@ String todaysDateFormatted() {
     month = '0$month';
   }
 
+  // day in the format dd
+  String day = dateTimeObject.day.toString();
+  if (day.length == 1) {
+    day = '0$day';
+  }
+
   return yyyymmdd;
 }
