@@ -1,5 +1,6 @@
 //reference our box
 import 'package:flutter/material.dart';
+import 'package:habbit_tracker/datetime/date_time.dart';
 import 'package:hive/hive.dart';
 
 final _myBox = Hive.box("Habbit_Database");
@@ -30,10 +31,26 @@ class HabitDatabase {
       ["Meditate", false],
       ["Write", false],
     ];
+
+    _myBox.put("START_DATE", todaysDateFormatted());
   }
 
   // LOAD DATA IF IT ALREADY EXISTS
-  void loadData() {}
+  void loadData() {
+    // we have to check if it's a new day, get habit list from database
+    if (_myBox.get(todaysDateFormatted()) == null) {
+      toDayHabitList = _myBox.get("CURRENT_HABIT_LIST");
+
+      //set all habit completed to false since it's a new day
+      for (int i = 0; i < toDayHabitList.length; i++) {
+        toDayHabitList[i][1] = false;
+      }
+
+      //if it's not a new day, load todays list from database
+    } else {
+      toDayHabitList = _myBox.get(todaysDateFormatted());
+    }
+  }
 
   // UPDATE DATABASE
   void updateDatabase() {

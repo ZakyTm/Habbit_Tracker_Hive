@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           });
     });
   }
-
+// ######################################################################################################################//
 // save existing habit with a new name
   void saveExistingHabit(int index) {
     setState(() {
