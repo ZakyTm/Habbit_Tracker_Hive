@@ -26,7 +26,7 @@ String todaysDateFormatted() {
 }
 
 // Convert String yyyymmdd to DateTime Object
-DateTime convertStringToDate(String yyyymmdd) {
+DateTime createDataTimeObject(String yyyymmdd) {
   // year
   int yyyy = int.parse(yyyymmdd.substring(0, 4));
 
@@ -42,4 +42,28 @@ DateTime convertStringToDate(String yyyymmdd) {
   return dateTimeObject;
 }
 
-//
+//Convert DateTime object to String yyyymmdd
+String convertDateTimeObjectToString(DateTime dateTimeObject) {
+  // year in the format yyyy
+
+  String year = dateTimeObject.year.toString();
+
+  // month in the format mm
+  String month = dateTimeObject.month.toString();
+
+  if (month.length == 1) {
+    month =
+        '0$month'; // this means that if the month is less than 10 then add a 0 before the month
+  }
+
+  // day in the format dd
+  String day = dateTimeObject.day.toString();
+  if (day.length == 1) {
+    day = '0$day';
+  }
+
+  // final format
+  String yyyymmdd = year + month + day;
+
+  return yyyymmdd;
+}
