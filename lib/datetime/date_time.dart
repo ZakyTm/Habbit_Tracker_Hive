@@ -19,5 +19,27 @@ String todaysDateFormatted() {
     day = '0$day';
   }
 
+  // final format
+  String yyyymmdd = year + month + day;
+
   return yyyymmdd;
 }
+
+// Convert String yyyymmdd to DateTime Object
+DateTime convertStringToDate(String yyyymmdd) {
+  // year
+  int yyyy = int.parse(yyyymmdd.substring(0, 4));
+
+  // month
+  int mm = int.parse(yyyymmdd.substring(4, 6));
+
+  // day
+  int dd = int.parse(yyyymmdd.substring(6, 8));
+
+  // create DateTime object
+  DateTime dateTimeObject = DateTime(yyyy, mm, dd);
+
+  return dateTimeObject;
+}
+
+//
