@@ -1,9 +1,9 @@
 //reference our box
-import 'package:flutter/material.dart';
+
 import 'package:habbit_tracker/datetime/date_time.dart';
 import 'package:hive/hive.dart';
 
-final _myBox = Hive.box("Habbit_Database");
+final _myBox = Hive.box("Habit_Database");
 // create initial default data
 // when the user first time open the app it's called initial state
 // if it's the first time than we have to use a method or create a new method that called
@@ -54,6 +54,37 @@ class HabitDatabase {
 
   // UPDATE DATABASE
   void updateDatabase() {
+    // update todays Entry
+    _myBox.put(todaysDateFormatted(),
+        toDayHabitList); // update the habit list of the current day
+
+    // update universal habit list in case in changed ( new habit, edit habit, delete habit)
     _myBox.put("CURRENT_HABIT_LIST", toDayHabitList);
+
+    // CALCULATE HABIT COMPLETE PERCENTAGES FOR EACH DAY
+    calculateHabitPercentages();
+
+    //LOAD HEAT MAP
+    loadHeatMap();
   }
+
+  void calculateHabitPercentages() {
+    int countCompleted = 0;
+    for (int i = 0; i < toDayHabitList.length; i++) {
+      if (toDayHabitList[i][1] == true) {
+        countCompleted++;
+      }
+    }
+
+    String percent = toDayHabitList.isEmpty
+        ? '0.0'
+        : (countCompleted / toDayHabitList.length).toStringAsFixed(1);
+
+    //Key : "percentage_summary_yyyymmdd"
+    //
+
+    _myBox.put("PERCENTAGE_SUMMARY_${todaysDateFormatted()}", percent);
+  }
+
+  void loadHeatMap() {}
 }

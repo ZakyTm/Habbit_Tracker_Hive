@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_tracker/components/habit_tile.dart';
+import 'package:habbit_tracker/components/month_summary.dart';
 import 'package:habbit_tracker/components/my_alert_box.dart';
 import 'package:habbit_tracker/components/my_fab.dart';
 import 'package:habbit_tracker/data/habit_database.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:habbit_tracker/data/habit_database.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,6 +31,9 @@ class _HomePageState extends State<HomePage> {
     } else {
       db.loadData();
     }
+
+    //UPDATE THE DATABASE
+    db.updateDatabase();
     super.initState();
   }
 
@@ -39,6 +42,8 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       db.toDayHabitList[index][1] = value;
     });
+
+    db.updateDatabase();
   }
 
   final _newHabitNameController = TextEditingController();
@@ -52,10 +57,11 @@ class _HomePageState extends State<HomePage> {
     _newHabitNameController.clear();
     //pop dialog box
     Navigator.of(context).pop();
+
+    db.updateDatabase();
   }
 
   void cancelDialogBox() {
-    print('Cancel button clicked');
     _newHabitNameController.clear();
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
@@ -80,14 +86,17 @@ class _HomePageState extends State<HomePage> {
           });
     });
   }
+
 // ######################################################################################################################//
 // save existing habit with a new name
   void saveExistingHabit(int index) {
     setState(() {
       db.toDayHabitList[index][0] = _newHabitNameController.text;
-      _newHabitNameController.clear();
-      Navigator.of(context).pop();
     });
+    _newHabitNameController.clear();
+    Navigator.of(context).pop();
+
+    db.updateDatabase();
   }
 
 //OPen habit settings to edit
@@ -109,6 +118,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       db.toDayHabitList.removeAt(index);
     });
+    db.updateDatabase();
   }
 
   @override
@@ -118,16 +128,25 @@ class _HomePageState extends State<HomePage> {
         floatingActionButton: MyFloatingActionButton(
           onPressed: createNewHabit,
         ),
-        body: ListView.builder(
-            itemCount: db.toDayHabitList.length,
-            itemBuilder: (context, index) {
-              return HabitTile(
-                habitName: db.toDayHabitList[index][0],
-                habitIsDone: db.toDayHabitList[index][1],
-                toggleHabit: (value) => checkBoxClicked(value, index),
-                onEdit: (context) => openHabitSettings(index),
-                onDelete: (context) => deleteHabit(index),
-              );
-            }));
+        body: ListView(
+          children: [
+            //Monthly Summary heat map
+            MonthlySummary(datasets: , startDate: _myBox.get("STARTDATE")),
+
+            ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: db.toDayHabitList.length,
+                itemBuilder: (context, index) {
+                  return HabitTile(
+                    habitName: db.toDayHabitList[index][0],
+                    habitIsDone: db.toDayHabitList[index][1],
+                    toggleHabit: (value) => checkBoxClicked(value, index),
+                    onEdit: (context) => openHabitSettings(index),
+                    onDelete: (context) => deleteHabit(index),
+                  );
+                })
+          ],
+        ));
   }
 }
