@@ -21,6 +21,7 @@ final _myBox = Hive.box("Habit_Database");
 
 class HabitDatabase {
   List toDayHabitList = [];
+  Map<DateTime, int> heatMapDataSet = {};
 
   // CREATE DEFAULT DATA
   void createDefaultData() {
@@ -81,10 +82,46 @@ class HabitDatabase {
         : (countCompleted / toDayHabitList.length).toStringAsFixed(1);
 
     //Key : "percentage_summary_yyyymmdd"
-    //
+    //value : string of 1dp number between 0.0 -1.0 inclusive
 
     _myBox.put("PERCENTAGE_SUMMARY_${todaysDateFormatted()}", percent);
   }
 
-  void loadHeatMap() {}
+  void loadHeatMap() {
+    DateTime startDate = createDataTimeObject(_myBox.get("START_DATE"));
+
+    // count the number of days to load
+    int daysInBetween = DateTime.now().difference(startDate).inDays;
+
+    // go from start date to today and add each percentage to the dataset
+    // "PERCENTAGE_SUMMARY_yyyymmdd" will be the key in the dataset
+    for (int i = 0; i < daysInBetween + 1; i++) {
+      String yyyymmdd =
+          convertDateTimeObjectToString(startDate.add(Duration(days: i)));
+
+      double strengthAsPercent =
+          double.parse(_myBox.get("PERCENTAGE_SUMMARY_$yyyymmdd") ?? "0.0");
+
+      //split the datetime up like below so it doesn't worry about hours/mins/secs etc.
+
+      //year
+      int year = startDate.add(Duration(days: i)).year;
+
+      //month
+
+      int month = startDate.add(Duration(days: i)).month;
+
+      //day
+      int day = startDate.add(Duration(days: i)).day;
+
+      final percenForEachDay = <DateTime, int>{
+        DateTime(year, month, day): (10 * strengthAsPercent).toInt(),
+      };
+
+      heatMapDataSet.addEntries(percenForEachDay.entries);
+      print(heatMapDataSet);
+    }
+
+    //
+  }
 }

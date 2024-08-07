@@ -131,7 +131,9 @@ class _HomePageState extends State<HomePage> {
         body: ListView(
           children: [
             //Monthly Summary heat map
-            MonthlySummary(datasets: , startDate: _myBox.get("STARTDATE")),
+            MonthlySummary(
+                datasets: db.heatMapDataSet,
+                startDate: _myBox.get("START_DATE")),
 
             ListView.builder(
                 shrinkWrap: true,
