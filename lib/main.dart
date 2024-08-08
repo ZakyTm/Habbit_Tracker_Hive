@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_tracker/pages/home_page.dart';
 
+import 'package:habbit_tracker/theme/theme_provider.dart';
+
 import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   // Initialize Hive
@@ -10,7 +13,8 @@ void main() async {
   // Open the box
   await Hive.openBox("Habit_Database");
 
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => ThemeProvider(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,9 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const HomePage(),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }
 }

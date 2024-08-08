@@ -1,11 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit_tracker/components/habit_tile.dart';
 import 'package:habbit_tracker/components/month_summary.dart';
 import 'package:habbit_tracker/components/my_alert_box.dart';
 import 'package:habbit_tracker/components/my_fab.dart';
 import 'package:habbit_tracker/data/habit_database.dart';
+import 'package:habbit_tracker/theme/dark_mode.dart';
+import 'package:habbit_tracker/theme/light_mode.dart';
+import 'package:habbit_tracker/theme/theme_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,11 +68,8 @@ class _HomePageState extends State<HomePage> {
 
   void cancelDialogBox() {
     _newHabitNameController.clear();
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
-    } else {
-      print('Cannot pop the context');
-    }
+
+    Navigator.of(context).pop();
   }
 
   void createNewHabit() {
@@ -124,7 +126,22 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[300],
+        appBar: AppBar(),
+        drawer: Drawer(
+          backgroundColor: Theme.of(context).primaryColor,
+          child: Center(
+            child: CupertinoSwitch(
+                value: Provider.of<ThemeProvider>(context).isDarkMode,
+                onChanged: (value) =>
+                    Provider.of<ThemeProvider>(context, listen: false)
+                            .themeData =
+                        Provider.of<ThemeProvider>(context, listen: false)
+                                    .themeData ==
+                                lightMode
+                            ? darkMode
+                            : lightMode),
+          ),
+        ),
         floatingActionButton: MyFloatingActionButton(
           onPressed: createNewHabit,
         ),
